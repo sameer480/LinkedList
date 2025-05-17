@@ -9,46 +9,54 @@
  * }
  */
 class Solution {
-    public ListNode mid(ListNode head){
-        ListNode slow=head;
+    // Find the middle of the list
+    public ListNode mid(ListNode head) {
+        ListNode slow = head;
         ListNode fast = head;
-        while(fast!=null && fast.next!=null){
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
             fast = fast.next.next;
-            slow= slow.next;
-           
         }
-        return slow;        
+
+        return slow; // returns the start of the second half for even-length lists
     }
-    public ListNode rev(ListNode head){
-        ListNode temp= head;
-        ListNode cur= head;
-        ListNode prev=null;
-        while(cur!=null){
-            temp= cur.next;
-            cur.next= prev;
-            prev= cur;
-            cur= temp;
+
+    // Reverse the list
+    public ListNode rev(ListNode head) {
+        ListNode prev = null;
+        while (head != null) {
+            ListNode nextTemp = head.next;
+            head.next = prev;
+            prev = head;
+            head = nextTemp;
         }
         return prev;
     }
+
     public boolean isPalindrome(ListNode head) {
         if (head == null || head.next == null) {
             return true;
         }
-        ListNode middle=mid(head);
-        
-        ListNode reverse= rev(middle);
 
-        while(reverse!=null){
-            if(head.val!=reverse.val){
+        // Step 1: Find middle
+        ListNode middle = mid(head);
+
+        // Step 2: Reverse second half
+        ListNode secondHalfStart = rev(middle);
+
+        // Step 3: Compare both halves
+        ListNode p1 = head;
+        ListNode p2 = secondHalfStart;
+
+        while (p2 != null) {  // Only need to check second half
+            if (p1.val != p2.val) {
                 return false;
             }
-            head= head.next;
-            reverse= reverse.next;
+            p1 = p1.next;
+            p2 = p2.next;
         }
+
         return true;
-
-
-        
     }
 }
